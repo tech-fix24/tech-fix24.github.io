@@ -90,10 +90,10 @@
                 <div class="terminal-box">
                     <div class="text-gray-400 mb-3">/* ОТПРАВИТЬ ЗАЯВКУ НА ПОЧТУ */</div>
                     
-                    <form action="https://formsubmit.co/shillerkirya82@gmail.com" method="POST" class="flex flex-col gap-3">
-                        <input type="hidden" name="_subject" value="НОВАЯ ЗАЯВКА НА РЕМОНТ!">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_next" value="https://tech-fix24.github.io/">
+                    <form action="https://api.web3forms.com/submit" method="POST" class="flex flex-col gap-3">
+                        <input type="hidden" name="access_key" value="9f3da243-9429-49c5-8f4d-b016b17c1d02">
+                        <input type="hidden" name="subject" value="🚨 НОВАЯ ЗАЯВКА НА РЕМОНТ (Berdsk Fix)">
+                        <input type="hidden" name="redirect" value="https://tech-fix24.github.io/">
 
                         <div><label class="block mb-1 text-sm">USER_NAME:</label><input type="text" name="Имя" class="terminal-input" required placeholder="Ваше имя"></div>
                         <div><label class="block mb-1 text-sm">PHONE_NUMBER:</label><input type="tel" name="Телефон" class="terminal-input" required placeholder="Ваш номер телефона"></div>
@@ -101,6 +101,7 @@
                         <div><label class="block mb-1 text-sm">ERROR_REASON:</label><textarea name="Причина" class="terminal-input" rows="3" required placeholder="Опишите проблему..."></textarea></div>
                         <button type="submit" class="terminal-btn p-2 mt-2 w-full">[ ОТПРАВИТЬ ДАННЫЕ ]</button>
                     </form>
+
                 </div>
             </div>
         </section>
