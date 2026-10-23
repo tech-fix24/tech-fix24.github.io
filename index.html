@@ -3,27 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>root@tech-fix24:~</title>
+    <title>root@repair-service: ~</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Базовые настройки терминала */
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        
         body {
             background-color: #050505;
             color: #00ff00;
             font-family: 'Share Tech Mono', monospace;
             overflow-x: hidden;
         }
+
+        /* Эффект старого ЭЛТ-монитора (scanlines) */
         .scanlines {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0),
+                rgba(255, 255, 255, 0) 50%,
+                rgba(0, 0, 0, 0.1) 50%,
+                rgba(0, 0, 0, 0.1)
+            );
             background-size: 100% 4px;
-            z-index: 50;
             pointer-events: none;
+            z-index: 50;
         }
+
+        /* Выделение текста */
+        ::selection {
+            background: #00ff00;
+            color: #000;
+        }
+
+        /* Глитч-эффект для заголовков */
         .glitch {
             position: relative;
+            display: inline-block;
         }
+        
         .glitch::before, .glitch::after {
             content: attr(data-text);
             position: absolute;
@@ -33,120 +56,322 @@
             height: 100%;
             background: #050505;
         }
+        
         .glitch::before {
             left: 2px;
             text-shadow: -1px 0 red;
             clip: rect(24px, 550px, 90px, 0);
-            animation: glitch-anim 2s infinite linear alternate-reverse;
+            animation: glitch-anim 3s infinite linear alternate-reverse;
         }
+        
         .glitch::after {
             left: -2px;
             text-shadow: -1px 0 blue;
             clip: rect(85px, 550px, 140px, 0);
             animation: glitch-anim 2.5s infinite linear alternate-reverse;
         }
+
         @keyframes glitch-anim {
-            0% { clip: rect(13px, 9999px, 86px, 0); }
-            20% { clip: rect(44px, 9999px, 11px, 0); }
-            40% { clip: rect(78px, 9999px, 49px, 0); }
-            60% { clip: rect(2px, 9999px, 93px, 0); }
-            80% { clip: rect(51px, 9999px, 32px, 0); }
-            100% { clip: rect(29px, 9999px, 74px, 0); }
+            0% { clip: rect(20px, 9999px, 85px, 0); }
+            5% { clip: rect(72px, 9999px, 14px, 0); }
+            10% { clip: rect(61px, 9999px, 20px, 0); }
+            15% { clip: rect(4px, 9999px, 91px, 0); }
+            20% { clip: rect(84px, 9999px, 23px, 0); }
+            25% { clip: rect(27px, 9999px, 73px, 0); }
+            30% { clip: rect(98px, 9999px, 58px, 0); }
+            35% { clip: rect(31px, 9999px, 12px, 0); }
+            40% { clip: rect(51px, 9999px, 16px, 0); }
+            45% { clip: rect(95px, 9999px, 74px, 0); }
+            50% { clip: rect(64px, 9999px, 21px, 0); }
+            55% { clip: rect(100px, 9999px, 5px, 0); }
+            60% { clip: rect(80px, 9999px, 75px, 0); }
+            65% { clip: rect(22px, 9999px, 83px, 0); }
+            70% { clip: rect(94px, 9999px, 95px, 0); }
+            75% { clip: rect(50px, 9999px, 92px, 0); }
+            80% { clip: rect(72px, 9999px, 15px, 0); }
+            85% { clip: rect(12px, 9999px, 60px, 0); }
+            90% { clip: rect(8px, 9999px, 27px, 0); }
+            95% { clip: rect(90px, 9999px, 11px, 0); }
+            100% { clip: rect(41px, 9999px, 35px, 0); }
         }
-        .typing {
-            border-right: 2px solid #00ff00;
-            white-space: nowrap;
-            overflow: hidden;
-            animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
+
+        /* Курсор терминала */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background-color: #00ff00;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
         }
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #00ff00; } }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Терминальные рамки и кнопки */
+        .terminal-box {
+            border: 1px solid #00ff00;
+            padding: 1rem;
+            position: relative;
+        }
+        
+        .terminal-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 5px; height: 5px; border-top: 2px solid #00ff00; border-left: 2px solid #00ff00;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 0.5rem;
+            width: 100%;
+            outline: none;
+        }
+        
+        .terminal-input:focus {
+            background: rgba(0, 255, 0, 0.1);
+        }
+
+        .terminal-btn {
+            background: transparent;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .terminal-btn:hover {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        
+        .text-red-warning {
+            color: #ff003c;
+            text-shadow: 0 0 5px rgba(255,0,60,0.5);
+        }
     </style>
 </head>
-<body class="p-4 sm:p-8 relative">
+<body class="min-h-screen flex flex-col items-center p-4 sm:p-8">
     <div class="scanlines"></div>
-    <div class="max-w-3xl mx-auto z-10 relative">
-        <header class="mb-10 border-b border-green-800 pb-4">
-            <h1 class="text-3xl sm:text-5xl font-bold glitch mb-2" data-text=">_TECH_FIX_24">>_TECH_FIX_24</h1>
-            <p class="typing text-sm sm:text-base">System boot... Welcome to root access.</p>
+
+    <main class="w-full max-w-4xl z-10 flex flex-col gap-8">
+        
+        <!-- Логотип / Хедер -->
+        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#00ff00] pb-4">
+            <div class="text-xl sm:text-2xl font-bold">
+                <span class="text-gray-500">root@</span><span class="glitch" data-text="BERDSK_FIX">BERDSK_FIX</span><span class="text-gray-500">:~#</span>
+            </div>
+            <div class="text-sm mt-2 sm:mt-0 text-right">
+                <p>Uptime: <span id="uptime">00:00:00</span></p>
+                <p>Location: [Бердск / НСО]</p>
+            </div>
         </header>
 
-        <main class="space-y-8">
-            <!-- Обо мне -->
-            <section class="border border-green-800 p-4 bg-black/50">
-                <h2 class="text-xl mb-4 text-green-400">[INFO] SYSTEM_DETAILS</h2>
-                <ul class="space-y-2 text-sm sm:text-base">
-                    <li><span class="text-gray-500">USER:</span> Мастер по ремонту</li>
-                    <li><span class="text-gray-500">LOCATION:</span> Бердск и Новосибирская область (на дому / выезд)</li>
-                    <li><span class="text-gray-500">TARGETS:</span> <span class="text-green-300 font-bold">Xiaomi, Samsung, Apple, Pixel, а также другие устройства (уточняйте)</span></li>
-                </ul>
-            </section>
+        <!-- Герой блок (печатающийся текст) -->
+        <section class="terminal-box min-h-[150px]">
+            <div class="text-gray-400 mb-2">/* СТАТУС СИСТЕМЫ */</div>
+            <div id="typewriter" class="text-lg sm:text-xl leading-relaxed"></div><span class="cursor"></span>
+        </section>
 
-            <!-- Услуги и цены -->
-            <section>
-                <h2 class="text-xl mb-4 text-green-400">[EXECUTE] SERVICES_AND_PRICES.sh</h2>
-                <div class="space-y-3 font-mono text-sm sm:text-base">
-                    <div class="flex justify-between border-b border-green-900 border-dashed pb-1">
-                        <span>Восстановление ПО / Прошивка</span>
-                        <span>от 1000 RUB</span>
-                    </div>
-                    <div class="flex justify-between border-b border-green-900 border-dashed pb-1">
-                        <span>Замена аккумуляторной батареи</span>
-                        <span>от 1500 RUB</span>
-                    </div>
-                    <div class="flex justify-between border-b border-green-900 border-dashed pb-1">
-                        <span>Замена дисплейного модуля</span>
-                        <span>от 2000 RUB</span>
-                    </div>
-                    <div class="flex justify-between border-b border-green-900 border-dashed pb-1">
-                        <span>Установка кастомных Recovery/Root</span>
-                        <span>от 800 RUB</span>
-                    </div>
-                </div>
-                <p class="mt-4 text-red-500 animate-pulse text-sm">WARNING: Указаны базовые цены. Окончательная стоимость формируется только после диагностики.</p>
-            </section>
-
-            <!-- Контакты -->
-            <section class="border border-green-800 p-4 bg-black/50">
-                <h2 class="text-xl mb-4 text-green-400">[CONNECT] INITIATE_CONTACT</h2>
+        <!-- Услуги и специализация -->
+        <section>
+            <h2 class="text-2xl mb-4 glitch" data-text="> ./services.sh">> ./services.sh</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
-                <div class="flex flex-col gap-4 mb-6">
-                    <a href="https://t.me/driop09" target="_blank" class="flex items-center gap-3 border border-green-600 hover:bg-green-900/50 p-3 transition-colors text-sm sm:text-base">
-                        <svg class="w-6 h-6 flex-shrink-0 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/></svg>
-                        <span>Написать в Telegram (@driop09)</span>
+                <div class="terminal-box">
+                    <h3 class="text-xl font-bold mb-3 border-b border-gray-600 pb-2">[ ПРОГРАММНЫЙ УРОВЕНЬ ]</h3>
+                    <ul class="space-y-2">
+                        <li>> Кастомные прошивки</li>
+                        <li>> Получение Root-прав</li>
+                        <li>> Установка TWRP / OrangeFox</li>
+                        <li>> Раскирпичивание устройств</li>
+                        <li>> Смена региона</li>
+                    </ul>
+                </div>
+
+                <div class="terminal-box">
+                    <h3 class="text-xl font-bold mb-3 border-b border-gray-600 pb-2">[ АППАРАТНЫЙ УРОВЕНЬ ]</h3>
+                    <ul class="space-y-2">
+                        <li>> Замена дисплейных модулей</li>
+                        <li>> Замена аккумуляторов (АКБ)</li>
+                        <li class="mt-4 text-gray-400">Формат работы:</li>
+                        <li>> Прием на дому</li>
+                        <li>> Выезд к клиенту (по договоренности)</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Поддерживаемые бренды -->
+        <section class="terminal-box flex flex-wrap gap-4 items-center justify-center">
+            <span class="text-gray-400 mr-2">Поддерживаемые архитектуры:</span>
+            <span class="px-2 border border-[#00ff00]">Xiaomi</span>
+            <span class="px-2 border border-[#00ff00]">Samsung</span>
+            <span class="px-2 border border-[#00ff00]">Apple</span>
+            <span class="px-2 border border-[#00ff00]">Pixel</span>
+            <!-- НОВАЯ СТРОКА С ДРУГИМИ УСТРОЙСТВАМИ -->
+            <span class="px-2 border border-[#00ff00] font-bold">+ другие устройства (уточняйте)</span>
+        </section>
+
+        <!-- Прайс-лист -->
+        <section>
+            <h2 class="text-2xl mb-4 glitch" data-text="> cat price_list.txt">> cat price_list.txt</h2>
+            <div class="terminal-box">
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-end w-full">
+                        <span>Программный ремонт (прошивка, root)</span>
+                        <div class="flex-grow border-b border-dotted border-gray-500 mx-2 mb-1"></div>
+                        <span class="whitespace-nowrap">от 1500 руб.</span>
+                    </div>
+                    <div class="flex items-end w-full">
+                        <span>Замена аккумулятора</span>
+                        <div class="flex-grow border-b border-dotted border-gray-500 mx-2 mb-1"></div>
+                        <span class="whitespace-nowrap">от 1000 руб.</span>
+                    </div>
+                    <div class="flex items-end w-full">
+                        <span>Замена дисплейного модуля</span>
+                        <div class="flex-grow border-b border-dotted border-gray-500 mx-2 mb-1"></div>
+                        <span class="whitespace-nowrap">от 1500 руб.</span>
+                    </div>
+                </div>
+                
+                <div class="mt-6 border border-[#ff003c] p-3 text-red-warning bg-black">
+                    [WARNING]: ОКОНЧАТЕЛЬНАЯ СТОИМОСТЬ ФОРМИРУЕТСЯ ТОЛЬКО ПОСЛЕ ПОЛНОЙ ДИАГНОСТИКИ УСТРОЙСТВА.
+                </div>
+            </div>
+        </section>
+
+        <!-- Контакты -->
+        <section>
+            <h2 class="text-2xl mb-4 glitch" data-text="> ping support">> ping support</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Кнопки связи -->
+                <div class="flex flex-col gap-4">
+                    <a href="https://t.me/driop09" target="_blank" class="terminal-btn flex items-center justify-center gap-3 p-3 sm:p-4 text-sm sm:text-base font-bold">
+                        <svg class="w-6 h-6 flex-shrink-0 fill-current" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.888-.662 3.483-1.519 5.805-2.519 6.967-3.001 3.315-1.381 4.005-1.627 4.455-1.635z"/></svg>
+                        <span class="text-center">[ TELEGRAM: @driop09 ]</span>
                     </a>
-                    <a href="tel:+79132428104" class="flex items-center gap-3 border border-green-600 hover:bg-green-900/50 p-3 transition-colors text-sm sm:text-base">
-                        <svg class="w-6 h-6 flex-shrink-0 fill-current" viewBox="0 0 24 24"><path d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.817-2.106 1.039c-7.202 3.755 4.233 25.982 11.6 22.615.121-.055 2.102-1.029 2.11-1.033z"/></svg>
-                        <span>Позвонить: +7 (913) 242-81-04</span>
+                    
+                    <a href="tel:+79132428104" class="terminal-btn flex items-center justify-center p-3 sm:p-4 text-sm sm:text-base">
+                        <span class="text-center">[ CALL: +7 (913) 242-81-04 ]</span>
                     </a>
                 </div>
 
-                <form onsubmit="event.preventDefault(); alert('Пакет данных отправлен. Я свяжусь с вами в ближайшее время.');" class="space-y-4 border-t border-green-900 pt-4">
-                    <p class="text-gray-500 mb-2">// Оставить заявку на диагностику</p>
-                    <input type="text" placeholder="Устройство (например: POCO X3 Pro)" class="w-full bg-black border border-green-800 p-2 text-green-400 focus:outline-none focus:border-green-400 font-mono" required>
-                    <textarea placeholder="Опишите проблему (например: висит на логотипе)" class="w-full bg-black border border-green-800 p-2 text-green-400 focus:outline-none focus:border-green-400 font-mono h-24" required></textarea>
-                    <button type="submit" class="w-full bg-green-900/30 border border-green-500 p-2 hover:bg-green-800/50 transition-colors uppercase font-bold tracking-widest text-sm sm:text-base">
-                        [ Отправить запрос ]
-                    </button>
-                </form>
-            </section>
-        </main>
-        
-        <footer class="mt-10 text-center text-xs text-gray-600">
-            <p>© 2026 ROOT_REPAIR_SERVICE // All rights reserved.</p>
-            <p id="uptime" class="mt-2"></p>
+                <!-- Форма обратной связи -->
+                <div class="terminal-box">
+                    <div class="text-gray-400 mb-3">/* ОТПРАВИТЬ ПАКЕТ ДАННЫХ */</div>
+                    <form id="contactForm" class="flex flex-col gap-3">
+                        <div>
+                            <label class="block mb-1 text-sm">USER_NAME:</label>
+                            <input type="text" id="userName" class="terminal-input" required placeholder="Ваше имя">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-sm">DEVICE_ERRORS:</label>
+                            <textarea id="deviceProblem" class="terminal-input" rows="3" required placeholder="Модель телефона и проблема..."></textarea>
+                        </div>
+                        <button type="submit" class="terminal-btn p-2 mt-2 w-full">[ ВЫПОЛНИТЬ ]</button>
+                    </form>
+                    
+                    <!-- Блок вывода результата отправки -->
+                    <div id="formOutput" class="hidden mt-4 p-2 bg-black border border-[#00ff00] text-sm">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <footer class="text-center text-gray-600 mt-8 pb-8 text-sm">
+            <p>> root@BERDSK_FIX // 2026</p>
+            <p>> EOF</p>
         </footer>
-    </div>
-    
+    </main>
+
     <script>
-        let seconds = 0;
+        // Эффект печатной машинки
+        const lines = [
+            "> СИСТЕМА ИНИЦИАЛИЗИРОВАНА...",
+            "> ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ...",
+            "> ПРОТОКОЛ ВОССТАНОВЛЕНИЯ АКТИВИРОВАН.",
+            "===================================",
+            "Прошивка и аппаратный ремонт смартфонов.",
+            "Локация: Бердск и Новосибирская область.",
+            "Формат: Работа на дому / Возможен выезд."
+        ];
+        
+        const typeWriterElement = document.getElementById('typewriter');
+        let lineIndex = 0;
+        let charIndex = 0;
+
+        function typeWriter() {
+            if (lineIndex < lines.length) {
+                if (charIndex < lines[lineIndex].length) {
+                    typeWriterElement.innerHTML += lines[lineIndex].charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeWriter, 30 + Math.random() * 50);
+                } else {
+                    typeWriterElement.innerHTML += '<br>';
+                    lineIndex++;
+                    charIndex = 0;
+                    setTimeout(typeWriter, 400);
+                }
+            }
+        }
+
+        // Запуск печати при загрузке
+        window.onload = function() {
+            setTimeout(typeWriter, 500);
+        };
+
+        // Счетчик аптайма (для атмосферы)
+        let uptimeSeconds = 0;
         setInterval(() => {
-            seconds++;
-            let h = Math.floor(seconds / 3600).toString().padStart(2, '0');
-            let m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-            let s = (seconds % 60).toString().padStart(2, '0');
-            document.getElementById('uptime').innerText = `SYSTEM UPTIME: ${h}:${m}:${s}`;
+            uptimeSeconds++;
+            let h = Math.floor(uptimeSeconds / 3600).toString().padStart(2, '0');
+            let m = Math.floor((uptimeSeconds % 3600) / 60).toString().padStart(2, '0');
+            let s = (uptimeSeconds % 60).toString().padStart(2, '0');
+            document.getElementById('uptime').innerText = `${h}:${m}:${s}`;
         }, 1000);
+
+        // ОБНОВЛЕННАЯ РАБОЧАЯ ФОРМА СВЯЗИ
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const output = document.getElementById('formOutput');
+            const btn = this.querySelector('button');
+            
+            // Получаем данные из формы
+            const name = document.getElementById('userName').value;
+            const problem = document.getElementById('deviceProblem').value;
+            
+            btn.innerHTML = '[ ОБРАБОТКА... ]';
+            
+            // Формируем сообщение и ссылку на Telegram
+            const text = `Новая заявка с сайта!\n\nИмя: ${name}\nПроблема: ${problem}`;
+            const tgLink = `https://t.me/driop09?text=${encodeURIComponent(text)}`;
+            
+            // Имитация небольшой задержки для стиля
+            setTimeout(() => {
+                // Перекидываем в Telegram
+                window.open(tgLink, '_blank');
+                
+                this.reset();
+                btn.innerHTML = '[ ВЫПОЛНИТЬ ]';
+                output.classList.remove('hidden');
+                output.innerHTML = `> ПАКЕТ ДАННЫХ ПЕРЕДАН В TELEGRAM.<br>> ОЖИДАЙТЕ СОЕДИНЕНИЯ...`;
+                
+                setTimeout(() => {
+                    output.classList.add('hidden');
+                }, 5000);
+            }, 1000);
+        });
     </script>
 </body>
 </html>
+
