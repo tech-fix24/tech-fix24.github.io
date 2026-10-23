@@ -216,7 +216,6 @@
             <span class="px-2 border border-[#00ff00]">Samsung</span>
             <span class="px-2 border border-[#00ff00]">Apple</span>
             <span class="px-2 border border-[#00ff00]">Pixel</span>
-            <!-- НОВАЯ СТРОКА С ДРУГИМИ УСТРОЙСТВАМИ -->
             <span class="px-2 border border-[#00ff00] font-bold">+ другие устройства (уточняйте)</span>
         </section>
 
@@ -265,24 +264,40 @@
                     </a>
                 </div>
 
-                <!-- Форма обратной связи -->
+                <!-- Форма обратной связи на email -->
                 <div class="terminal-box">
-                    <div class="text-gray-400 mb-3">/* ОТПРАВИТЬ ПАКЕТ ДАННЫХ */</div>
-                    <form id="contactForm" class="flex flex-col gap-3">
+                    <div class="text-gray-400 mb-3">/* ОТПРАВИТЬ ЗАЯВКУ НА ПОЧТУ */</div>
+                    
+                    <!-- ЗДЕСЬ ОБЯЗАТЕЛЬНО ПОМЕНЯЙ ПОЧТУ В action НА СВОЮ -->
+                    <form action="https://formsubmit.co/СЮДА_ВПИШИ_СВОЮ_ПОЧТУ@yandex.ru" method="POST" class="flex flex-col gap-3">
+                        
+                        <!-- Настройки отправки писем (скрытые поля) -->
+                        <input type="hidden" name="_subject" value="НОВАЯ ЗАЯВКА НА РЕМОНТ!">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_next" value="https://tech-fix24.github.io/">
+
                         <div>
                             <label class="block mb-1 text-sm">USER_NAME:</label>
-                            <input type="text" id="userName" class="terminal-input" required placeholder="Ваше имя">
+                            <input type="text" name="Имя" class="terminal-input" required placeholder="Ваше имя">
                         </div>
+                        
                         <div>
-                            <label class="block mb-1 text-sm">DEVICE_ERRORS:</label>
-                            <textarea id="deviceProblem" class="terminal-input" rows="3" required placeholder="Модель телефона и проблема..."></textarea>
+                            <label class="block mb-1 text-sm">PHONE_NUMBER:</label>
+                            <input type="tel" name="Телефон" class="terminal-input" required placeholder="Ваш номер телефона">
                         </div>
-                        <button type="submit" class="terminal-btn p-2 mt-2 w-full">[ ВЫПОЛНИТЬ ]</button>
+                        
+                        <div>
+                            <label class="block mb-1 text-sm">DEVICE_MODEL:</label>
+                            <input type="text" name="Устройство" class="terminal-input" required placeholder="Например: POCO X3 Pro">
+                        </div>
+
+                        <div>
+                            <label class="block mb-1 text-sm">ERROR_REASON:</label>
+                            <textarea name="Причина" class="terminal-input" rows="3" required placeholder="Опишите проблему..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="terminal-btn p-2 mt-2 w-full">[ ОТПРАВИТЬ ДАННЫЕ ]</button>
                     </form>
-                    
-                    <!-- Блок вывода результата отправки -->
-                    <div id="formOutput" class="hidden mt-4 p-2 bg-black border border-[#00ff00] text-sm">
-                    </div>
                 </div>
 
             </div>
@@ -325,12 +340,11 @@
             }
         }
 
-        // Запуск печати при загрузке
         window.onload = function() {
             setTimeout(typeWriter, 500);
         };
 
-        // Счетчик аптайма (для атмосферы)
+        // Счетчик аптайма
         let uptimeSeconds = 0;
         setInterval(() => {
             uptimeSeconds++;
@@ -339,39 +353,7 @@
             let s = (uptimeSeconds % 60).toString().padStart(2, '0');
             document.getElementById('uptime').innerText = `${h}:${m}:${s}`;
         }, 1000);
-
-        // ОБНОВЛЕННАЯ РАБОЧАЯ ФОРМА СВЯЗИ
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const output = document.getElementById('formOutput');
-            const btn = this.querySelector('button');
-            
-            // Получаем данные из формы
-            const name = document.getElementById('userName').value;
-            const problem = document.getElementById('deviceProblem').value;
-            
-            btn.innerHTML = '[ ОБРАБОТКА... ]';
-            
-            // Формируем сообщение и ссылку на Telegram
-            const text = `Новая заявка с сайта!\n\nИмя: ${name}\nПроблема: ${problem}`;
-            const tgLink = `https://t.me/driop09?text=${encodeURIComponent(text)}`;
-            
-            // Имитация небольшой задержки для стиля
-            setTimeout(() => {
-                // Перекидываем в Telegram
-                window.open(tgLink, '_blank');
-                
-                this.reset();
-                btn.innerHTML = '[ ВЫПОЛНИТЬ ]';
-                output.classList.remove('hidden');
-                output.innerHTML = `> ПАКЕТ ДАННЫХ ПЕРЕДАН В TELEGRAM.<br>> ОЖИДАЙТЕ СОЕДИНЕНИЯ...`;
-                
-                setTimeout(() => {
-                    output.classList.add('hidden');
-                }, 5000);
-            }, 1000);
-        });
     </script>
 </body>
-</html>
-
+                            </html>
+                                
